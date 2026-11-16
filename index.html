@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>Saaheb — Islamic Digital Sanctuary</title><link rel="icon" type="image/png" href="saaheb.png"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }
+
+/* ── Custom Cursor ── */
+#cursor-dot { pointer-events:none; position:fixed; top:0;left:0;width:12px;height:12px;border-radius:50%;background:rgba(253,204,115,0.9);box-shadow:0 0 18px 6px rgba(253,204,115,0.45);transform:translate(-50%,-50%);transition:opacity .3s;z-index:99999;mix-blend-mode:screen;}
+#cursor-ring { pointer-events:none; position:fixed; top:0;left:0;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(253,204,115,0.4);transform:translate(-50%,-50%);transition:transform .08s,opacity .3s;z-index:99998;}
+
+/* ── Concept Banner ── */
+#concept-banner { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(0,10,6,0.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(253,204,115,0.2);transform:translateY(0);transition:transform .5s cubic-bezier(.77,0,.18,1),opacity .5s;}
+#concept-banner.dismissed { transform:translateY(-100%);opacity:0;pointer-events:none; }
+body.banner-visible { --banner-h:52px; }
+
+/* ── Page Load Entrance ── */
+.entrance-hidden { opacity:0;transform:translateY(28px); }
+.entrance-visible { opacity:1;transform:translateY(0);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1); }
+
+/* ── Scroll Reveal ── */
+.reveal { opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1); }
+.reveal.visible { opacity:1;transform:translateY(0); }
+.reveal-left { opacity:0;transform:translateX(-28px);transition:opacity .65s .1s cubic-bezier(.22,1,.36,1),transform .65s .1s cubic-bezier(.22,1,.36,1); }
+.reveal-left.visible { opacity:1;transform:translateX(0); }
+.reveal-right { opacity:0;transform:translateX(28px);transition:opacity .65s .1s cubic-bezier(.22,1,.36,1),transform .65s .1s cubic-bezier(.22,1,.36,1); }
+.reveal-right.visible { opacity:1;transform:translateX(0); }
+.reveal-delay-1 { transition-delay:.1s!important; }
+.reveal-delay-2 { transition-delay:.2s!important; }
+.reveal-delay-3 { transition-delay:.3s!important; }
+.reveal-delay-4 { transition-delay:.4s!important; }
+
+/* ── Card Tilt ── */
+.tilt-card { transform-style:preserve-3d;transition:transform .2s ease; }
+
+/* ── Ripple ── */
+.ripple-btn { position:relative;overflow:hidden; }
+.ripple-btn::after { content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.25);transform:translate(-50%,-50%);transition:width .5s ease,height .5s ease,opacity .5s ease;opacity:0; }
+.ripple-btn:active::after { width:300px;height:300px;opacity:0; }
+
+/* ── Button Glow ── */
+.btn-glow:hover { box-shadow:0 0 32px rgba(253,204,115,0.55); }
+
+/* ── Particles ── */
+#particles-canvas { position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0; }
+
+/* ── Islamic Star SVG ── */
+#hero-star-bg { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;overflow:hidden;opacity:.07; }
+#hero-star-bg svg { width:min(900px,110vw);height:min(900px,110vw);animation:slowRotate 60s linear infinite; }
+@keyframes slowRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+/* ── Stats Counter ── */
+.stat-num { font-variant-numeric:tabular-nums; }
+
+/* ── Navbar indicator ── */
+#nav-indicator { position:absolute;bottom:4px;height:2px;background:linear-gradient(90deg,#fdcc73,#dfb15b);border-radius:9999px;transition:left .3s cubic-bezier(.22,1,.36,1),width .3s cubic-bezier(.22,1,.36,1);pointer-events:none; }
+
+/* ── Section Dividers ── */
+.section-divider { width:100%;overflow:hidden;line-height:0;opacity:.35; }
+.section-divider svg { display:block;width:100%; }
+
+/* ── Admin Dashboard ── */
+#admin-overlay { position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.8);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:1rem; }
+#admin-overlay.open { display:flex; }
+#admin-panel { background:rgba(11,36,29,0.97);border:1px solid rgba(253,204,115,0.25);border-radius:1.5rem;width:100%;max-width:900px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(253,204,115,0.1); }
+#admin-panel-body { overflow-y:auto;flex:1; }
+.admin-table th { color:rgba(253,204,115,0.8);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;padding:.6rem .75rem;border-bottom:1px solid rgba(253,204,115,0.1); }
+.admin-table td { padding:.6rem .75rem;border-bottom:1px solid rgba(255,255,255,0.05);font-size:.8rem;vertical-align:top; }
+.admin-table tr:hover td { background:rgba(253,204,115,0.04); }
+.read-badge { display:inline-block;padding:1px 8px;border-radius:9999px;font-size:.65rem;font-weight:600; }
+.read-badge.unread { background:rgba(253,204,115,0.2);color:#fdcc73; }
+.read-badge.read { background:rgba(78,222,163,0.15);color:#4edea3; }
+
+/* ── PIN Modal ── */
+#pin-modal { position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.9);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center; }
+#pin-modal.open { display:flex; }
+
+/* ── Mobile Menu ── */
+#mobile-menu { position:fixed;top:0;right:0;bottom:0;width:min(320px,100vw);background:rgba(7,32,25,0.98);backdrop-filter:blur(20px);border-left:1px solid rgba(253,204,115,0.12);z-index:800;transform:translateX(100%);transition:transform .4s cubic-bezier(.77,0,.18,1);display:flex;flex-direction:column;padding:5rem 2rem 2rem;gap:1rem; }
+#mobile-menu.open { transform:translateX(0); }
+#mobile-menu a { font-size:1.1rem;font-weight:600;color:rgba(205,233,221,0.8);padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,0.06);transition:color .2s; }
+#mobile-menu a:hover { color:#fdcc73; }
+
+/* ── Progress bar animation ── */
+@keyframes progressFill { from{width:0} to{width:62%} }
+#prayer-progress-bar { animation:progressFill 2s 1s ease forwards; width:0; }
+
+/* ── Footer radial glow ── */
+footer { background:radial-gradient(ellipse at 50% 100%, rgba(253,204,115,0.08) 0%, rgba(0,10,6,0) 65%), #00120c; }
+
+/* ── Mosque finder app preview ── */
+.mosque-finder-preview { position:relative;min-height:520px;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:1.25rem;background:#e8eee1;color:#1b2b24;box-shadow:0 24px 60px rgba(0,0,0,.35); }
+.mosque-finder-map { position:absolute;inset:0;overflow:hidden;background-color:#e8eee1;background-image:linear-gradient(34deg,transparent 48%,rgba(255,255,255,.8) 48.5%,rgba(255,255,255,.8) 50%,transparent 50.5%),linear-gradient(145deg,transparent 47%,rgba(255,255,255,.75) 47.5%,rgba(255,255,255,.75) 49%,transparent 49.5%),linear-gradient(90deg,rgba(190,216,184,.38) 1px,transparent 1px),linear-gradient(rgba(190,216,184,.38) 1px,transparent 1px);background-size:100% 100%,100% 100%,70px 70px,70px 70px; }
+.mosque-finder-map::before,.mosque-finder-map::after { content:"";position:absolute;border:10px solid rgba(255,255,255,.88);border-radius:50%;transform:rotate(-28deg); }
+.mosque-finder-map::before { width:130%;height:62%;left:-24%;top:19%; }
+.mosque-finder-map::after { width:120%;height:30%;left:18%;top:26%;transform:rotate(38deg); }
+.mosque-map-river { position:absolute;width:135%;height:46px;left:-15%;top:61%;background:#c9e2e5;transform:rotate(-18deg);border:4px solid rgba(255,255,255,.8); }
+.mosque-map-road { position:absolute;height:4px;background:#fff;border:1px solid #d5d9d0;border-radius:99px;transform-origin:left center;z-index:1; }
+.mosque-map-road.road-one { width:120%;left:-6%;top:38%;transform:rotate(24deg); }
+.mosque-map-road.road-two { width:100%;left:8%;top:18%;transform:rotate(72deg); }
+.mosque-map-road.road-three { width:90%;left:25%;top:78%;transform:rotate(-57deg); }
+.mosque-map-label { position:absolute;z-index:2;color:#647269;font:600 10px/1 Manrope, sans-serif;letter-spacing:.04em;text-shadow:0 1px 2px #fff; }
+.mosque-map-pin { position:absolute;z-index:3;top:31%;left:57%;width:48px;height:48px;display:grid;place-items:center;border:4px solid white;border-radius:50% 50% 50% 8px;background:#16835d;color:white;box-shadow:0 4px 12px rgba(0,0,0,.25);transform:rotate(-45deg); }
+.mosque-map-pin span { transform:rotate(45deg);font-size:23px; }
+.mosque-user-dot { position:absolute;z-index:3;top:47%;left:34%;width:18px;height:18px;border:4px solid white;border-radius:50%;background:#4285f4;box-shadow:0 1px 8px rgba(0,0,0,.25); }
+.mosque-user-dot::after { content:"";position:absolute;inset:-9px;border-radius:50%;background:rgba(66,133,244,.18); }
+.mosque-finder-top { position:absolute;z-index:4;top:14px;left:14px;right:14px;display:flex;flex-direction:column;gap:10px; }
+.mosque-finder-status { display:flex;justify-content:space-between;padding:0 7px;color:#21312a;font:700 11px/1 Manrope,sans-serif;text-shadow:0 1px 4px white; }
+.mosque-finder-search { display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:white;box-shadow:0 3px 14px rgba(36,54,43,.2);color:#293a32; }
+.mosque-finder-controls { position:absolute;z-index:4;right:14px;top:106px;display:flex;flex-direction:column;gap:8px; }
+.mosque-finder-controls span { width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:white;color:#43554b;box-shadow:0 2px 8px rgba(36,54,43,.2); }
+.mosque-result-card { position:absolute;z-index:5;left:12px;right:12px;bottom:12px;padding:14px;border-radius:18px;background:#fff;box-shadow:0 6px 24px rgba(26,42,33,.25); }
+.mosque-result-feature { display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:999px;background:#edf5ef;color:#28483a;font:700 10px/1.2 Manrope,sans-serif; }
+@media (max-width:480px) { .mosque-finder-preview { min-height:560px; }.mosque-result-feature { font-size:9px;padding:5px 6px; } }
+</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-container": "#00a572", "tertiary-fixed": "#f9e0a4", "on-tertiary": "#3d2f03", "on-tertiary-container": "#574719", "on-primary-fixed-variant": "#5e4200", "surface-container-lowest": "#00120c", "on-secondary-container": "#00311f", "secondary-fixed": "#6ffbbe", "on-background": "#cde9dd", "on-surface": "#cde9dd", "primary-container": "#dfb15b", "secondary": "#4edea3", "inverse-on-surface": "#1d352d", "tertiary": "#ead297", "on-error-container": "#ffdad6", "surface-tint": "#efbf68", "inverse-surface": "#cde9dd", "on-tertiary-fixed-variant": "#554517", "surface": "#001711", "on-secondary-fixed": "#002113", "error": "#ffb4ab", "on-primary-fixed": "#271900", "surface-container-low": "#072019", "surface-bright": "#263e36", "tertiary-fixed-dim": "#dcc48b", "surface-container": "#0b241d", "primary-fixed-dim": "#efbf68", "on-primary-container": "#604400", "surface-container-high": "#162e27", "outline": "#9b8f7e", "surface-variant": "#213931", "on-surface-variant": "#d2c5b2", "outline-variant": "#4e4637", "secondary-fixed-dim": "#4edea3", "surface-container-highest": "#213931", "on-secondary-fixed-variant": "#005236", "surface-dim": "#001711", "inverse-primary": "#7b5804", "background": "#001711", "error-container": "#93000a", "on-primary": "#412d00", "on-error": "#690005", "tertiary-container": "#cdb67e", "primary": "#fdcc73", "on-secondary": "#003824", "on-tertiary-fixed": "#241a00", "primary-fixed": "#ffdea7" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-mobile": "1.25rem", "gutter-mobile": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter": "1.5rem", "space-xl": "2.5rem", "space-md": "1rem", "space-lg": "1.5rem", "margin": "3rem" }, "fontFamily": { "label-lg": [ "Manrope" ], "body-sm": [ "Manrope" ], "label-md": [ "Manrope" ], "body-md": [ "Manrope" ], "headline-lg": [ "Newsreader" ], "display-lg-mobile": [ "Newsreader" ], "display-lg": [ "Newsreader" ], "headline-sm": [ "Newsreader" ], "headline-md": [ "Newsreader" ], "body-lg": [ "Manrope" ], "label-sm": [ "Manrope" ] }, "fontSize": { "label-lg": [ "0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.05em", "fontWeight": "600" } ], "body-sm": [ "0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0.01em", "fontWeight": "400" } ], "label-md": [ "0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.08em", "fontWeight": "600" } ], "body-md": [ "1rem", { "lineHeight": "1.625rem", "letterSpacing": "0em", "fontWeight": "400" } ], "headline-lg": [ "2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "display-lg-mobile": [ "2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "display-lg": [ "3.5rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.02em", "fontWeight": "400" } ], "headline-sm": [ "1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "500" } ], "headline-md": [ "1.5rem", { "lineHeight": "2rem", "letterSpacing": "0em", "fontWeight": "500" } ], "body-lg": [ "1.125rem", { "lineHeight": "1.875rem", "letterSpacing": "0em", "fontWeight": "400" } ], "label-sm": [ "0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.1em", "fontWeight": "500" } ] } } } };</script></head>
+
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col justify-between">
+
+<!-- ══════════════════════════════════════════
+     CUSTOM CURSOR
+══════════════════════════════════════════ -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ══════════════════════════════════════════
+     FLOATING PARTICLES CANVAS
+══════════════════════════════════════════ -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ══════════════════════════════════════════
+     CONCEPT WARNING BANNER
+══════════════════════════════════════════ -->
+<div id="concept-banner">
+  <div class="max-w-7xl mx-auto px-4 h-[52px] flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+      <span class="text-yellow-400 text-lg flex-shrink-0">⚡</span>
+      <p class="text-sm text-on-surface-variant leading-tight truncate">
+        <span class="text-primary font-semibold">Concept Design Only.</span>
+        <span class="ml-1">Saaheb is an idea in development — not yet available for download.</span>
+      </p>
+    </div>
+    <button id="banner-close" class="flex-shrink-0 w-7 h-7 rounded-full bg-surface-container-high/60 hover:bg-surface-container-highest flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" aria-label="Dismiss banner">
+      <span class="material-symbols-outlined text-[16px]">close</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MOBILE MENU OVERLAY
+══════════════════════════════════════════ -->
+<div id="mobile-menu-overlay" class="fixed inset-0 z-[799] bg-black/40 backdrop-blur-sm hidden transition-opacity" onclick="closeMobileMenu()"></div>
+<nav id="mobile-menu" aria-label="Mobile navigation">
+  <button onclick="closeMobileMenu()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined text-[20px]">close</span>
+  </button>
+  <div class="flex items-center gap-3 mb-6 pb-4 border-b border-surface-container-high">
+    <img class="w-8 h-8 object-contain" src="saaheb.png" alt="Saaheb logo"/>
+    <span class="text-primary font-semibold text-lg">Saaheb</span>
+  </div>
+  <a href="#sanctuary" onclick="closeMobileMenu()">Sanctuary</a>
+  <a href="#protect" onclick="closeMobileMenu()">Protect</a>
+  <a href="#prayer" onclick="closeMobileMenu()">Prayer</a>
+  <a href="#quran" onclick="closeMobileMenu()">Quran</a>
+  <a href="#habits" onclick="closeMobileMenu()">Habits</a>
+  <a href="#masjids" onclick="closeMobileMenu()">Masjids</a>
+  <a href="#downloads" onclick="closeMobileMenu()">Downloads</a>
+  <a href="#patrons" onclick="closeMobileMenu()">Patrons</a>
+  <a href="https://amanapp.dev/" target="_blank" rel="noopener" class="mt-4 w-full py-3 rounded-full bg-primary text-on-primary font-semibold text-center block text-sm">Download Free</a>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     PIN MODAL
+══════════════════════════════════════════ -->
+<div id="pin-modal">
+  <div class="bg-surface-container-low border border-primary/20 rounded-2xl p-8 w-full max-w-sm shadow-2xl text-center">
+    <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+      <span class="material-symbols-outlined text-primary text-[28px]">admin_panel_settings</span>
+    </div>
+    <h3 class="font-headline-sm text-headline-sm text-primary mb-1">Amanah Council</h3>
+    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-6">Enter Council Access PIN</p>
+    <div id="pin-dots" class="flex justify-center gap-3 mb-6">
+      <div class="w-3 h-3 rounded-full bg-surface-container-high pin-dot"></div>
+      <div class="w-3 h-3 rounded-full bg-surface-container-high pin-dot"></div>
+      <div class="w-3 h-3 rounded-full bg-surface-container-high pin-dot"></div>
+    </div>
+    <div class="grid grid-cols-3 gap-2 mb-4">
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="1">1</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="2">2</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="3">3</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="4">4</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="5">5</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="6">6</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="7">7</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="8">8</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="9">9</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-error font-semibold text-lg transition-all" id="pin-clear">⌫</button>
+      <button class="pin-key py-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-lg transition-all" data-digit="0">0</button>
+      <button onclick="document.getElementById('pin-modal').classList.remove('open')" class="py-3 rounded-xl bg-surface-container text-on-surface-variant font-semibold text-sm transition-all">Cancel</button>
+    </div>
+    <p id="pin-error" class="text-error font-label-sm text-label-sm hidden">Incorrect PIN. Try again.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ADMIN DASHBOARD OVERLAY
+══════════════════════════════════════════ -->
+<div id="admin-overlay">
+  <div id="admin-panel">
+    <!-- Admin Header -->
+    <div class="p-5 border-b border-primary/15 flex items-center justify-between gap-4 bg-surface-container-lowest/80">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary text-[20px]">admin_panel_settings</span>
+        </div>
+        <div>
+          <h2 class="font-headline-sm text-headline-sm text-primary leading-none">Saaheb Council</h2>
+          <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-0.5">Admin Dashboard</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex items-center gap-4 mr-2">
+          <div class="text-center">
+            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total</div>
+            <div id="stat-total" class="font-headline-sm text-headline-sm text-primary">0</div>
+          </div>
+          <div class="text-center">
+            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Unread</div>
+            <div id="stat-unread" class="font-headline-sm text-headline-sm text-yellow-400">0</div>
+          </div>
+        </div>
+        <button onclick="exportCSV()" class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm transition-all flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">download</span>Export CSV
+        </button>
+        <button onclick="clearAllSubmissions()" class="px-3 py-1.5 rounded-lg bg-error/10 hover:bg-error/20 text-error font-label-sm text-label-sm transition-all flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">delete_sweep</span>Clear All
+        </button>
+        <button onclick="closeAdmin()" class="w-8 h-8 rounded-full bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-all">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+    </div>
+    <!-- Admin Body -->
+    <div id="admin-panel-body" class="p-5">
+      <div id="admin-empty" class="py-16 flex flex-col items-center gap-3 text-on-surface-variant hidden">
+        <span class="material-symbols-outlined text-[48px] opacity-30">inbox</span>
+        <p class="font-label-md text-label-md uppercase tracking-widest opacity-50">No transmissions yet</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-container-high">
+        <table class="admin-table w-full" id="admin-table">
+          <thead>
+            <tr>
+              <th class="text-left">#</th>
+              <th class="text-left">Status</th>
+              <th class="text-left">Name</th>
+              <th class="text-left">Email</th>
+              <th class="text-left">Type</th>
+              <th class="text-left">Message</th>
+              <th class="text-left">Timestamp</th>
+              <th class="text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody" class="text-on-surface-variant">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HEADER / NAVBAR
+══════════════════════════════════════════ -->
+<header id="main-header" class="fixed left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all duration-300" style="top:52px">
+  <div class="h-20 w-full px-margin flex items-center justify-between">
+    <div class="flex items-center gap-space-lg">
+      <a class="flex items-center gap-space-sm group" href="#sanctuary" id="logo-link">
+        <img class="w-9 h-9 object-contain transition-transform group-hover:scale-105" src="saaheb.png" alt="Saaheb logo"/>
+        <div class="flex flex-col">
+          <span class="font-headline-sm text-headline-sm text-primary tracking-wide leading-none">Saaheb</span>
+          <span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-80 mt-space-xs">Digital Sanctuary</span>
+        </div>
+      </a>
+    </div>
+    <!-- Desktop Nav -->
+    <nav class="hidden xl:flex items-center gap-space-xs bg-surface-container-low/60 backdrop-blur-md px-space-sm py-space-xs rounded-full relative" id="desktop-nav">
+      <div id="nav-indicator"></div>
+      <a aria-current="page" class="nav-link px-space-md py-space-xs transition-all bg-surface-container-high text-primary font-bold rounded-full shadow-[0_0_16px_rgba(223,177,91,0.12)]" href="#sanctuary">Sanctuary</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#protect">Protect</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#prayer">Prayer</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#quran">Quran</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#habits">Habits</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#masjids">Masjids</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#downloads">Downloads</a>
+      <a class="nav-link px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all" href="#patrons">Patrons</a>
+    </nav>
+    <div class="flex items-center gap-space-md">
+      <a class="hidden sm:inline-flex items-center justify-center px-space-lg py-space-sm rounded-full bg-primary font-label-lg text-label-lg text-on-primary shadow-[0_0_24px_rgba(223,177,91,0.25)] hover:shadow-[0_0_32px_rgba(223,177,91,0.4)] transition-all ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">Download Free</a>
+      <button id="hamburger-btn" class="xl:hidden w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" onclick="openMobileMenu()" aria-label="Open menu">
+        <span class="material-symbols-outlined text-[20px]">menu</span>
+      </button>
+      <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="w-full pt-20 bg-surface flex-1" style="padding-top:calc(80px + 52px)">
+<div class="flex flex-col w-full">
+
+<!-- Atmospheric Background Ambient Glows -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[700px] bg-gradient-to-b from-primary/10 via-secondary-container/5 to-transparent blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-[1400px] right-[-100px] w-[600px] h-[600px] bg-primary/5 blur-[120px] pointer-events-none -z-10"></div>
+<div class="absolute top-[2800px] left-[-150px] w-[700px] h-[700px] bg-secondary/5 blur-[140px] pointer-events-none -z-10"></div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: HERO
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin pt-space-lg md:pt-space-xl pb-space-xl relative" id="sanctuary">
+  <!-- Islamic Star Geometric Background -->
+  <div id="hero-star-bg">
+    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#fdcc73">
+        <!-- 8-Point Islamic Star -->
+        <polygon points="250,60 275,175 370,120 290,210 400,230 290,270 370,360 275,305 250,420 225,305 130,360 210,270 100,230 210,210 130,120 225,175"/>
+        <polygon points="250,110 265,185 325,145 280,200 345,220 280,250 325,305 265,270 250,345 235,270 175,305 220,250 155,220 220,200 175,145 235,185" opacity="0.5"/>
+        <!-- Outer octagon ring -->
+        <polygon points="250,30 320,80 390,80 420,150 420,220 390,290 320,340 250,370 180,340 110,290 80,220 80,150 110,80 180,80" fill="none" stroke="#fdcc73" stroke-width="1" opacity="0.4"/>
+        <polygon points="250,10 340,65 410,65 450,145 450,230 410,310 340,365 250,400 160,365 90,310 50,230 50,145 90,65 160,65" fill="none" stroke="#fdcc73" stroke-width="0.5" opacity="0.2"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+    <!-- Eyebrow Badge -->
+    <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[0_0_20px_rgba(223,177,91,0.08)] mb-space-lg entrance-hidden" id="hero-badge">
+      <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Saaheb • Islamic Companion 2.0</span>
+      <span class="text-on-surface-variant/50">•</span>
+      <span class="font-label-sm text-label-sm text-on-surface-variant">Zero Ad Trackers • Pure Waqf</span>
+    </div>
+    <!-- Headline -->
+    <h1 class="font-headline-lg text-display-lg md:text-[4rem] md:leading-[1.1] text-primary max-w-4xl tracking-tight mb-space-md entrance-hidden" id="hero-headline">
+      Your Spiritual Life, <span class="italic font-normal text-on-surface">Thoughtfully Crafted.</span>
+    </h1>
+    <!-- Subtitle -->
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-space-xl leading-relaxed entrance-hidden" id="hero-sub">
+      A serene, uncompromising digital sanctuary. Authentic 15-line Madinah Mushaf, astronomical prayer chronometry, privacy armor against algorithmic distraction, and sensor-fused Qibla fidelity.
+    </p>
+    <!-- CTAs -->
+    <div class="flex flex-wrap items-center justify-center gap-space-md mb-space-xl entrance-hidden" id="hero-ctas">
+      <a class="inline-flex items-center gap-space-sm px-space-xl py-3.5 rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-[0_0_28px_rgba(223,177,91,0.35)] hover:shadow-[0_0_40px_rgba(223,177,91,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">
+        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">download</span>
+        <span>Download Desktop &amp; Mobile</span>
+      </a>
+      <a class="inline-flex items-center gap-space-sm px-space-lg py-3.5 rounded-full bg-surface-container-high/60 backdrop-blur-md text-on-surface hover:text-primary hover:bg-surface-container-high font-label-lg text-label-lg shadow-sm transition-all duration-200" href="#protect">
+        <span class="material-symbols-outlined text-[20px]">explore</span>
+        <span>Why Saaheb</span>
+      </a>
+    </div>
+    <!-- Hero Dual Display -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter items-stretch text-left entrance-hidden" id="hero-cards">
+      <!-- Open Quran Visual Artifact -->
+      <div class="lg:col-span-7 relative group rounded-2xl overflow-hidden shadow-2xl bg-surface-container-lowest min-h-[420px] flex flex-col justify-end tilt-card">
+        <img alt="Open Holy Quran on carved wooden rehal stand illuminated by atmospheric sanctuary golden rays" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ3KKKkoxrMtbYBBdjlAZv7pZcNuzGBgdK-W6ANIMn1wTE6f2orpiqI9j3n9lmv0sFLbYHu0hATJxRvQgSFJmbPyhYVIOzPYCLotq4_NWOYXcIyTXmA_wGUuSAZ_lvg1mTFpSCH-CU7dvvv4Pz7NRMobkBmM65fCn8__S9NS-W7UAhx90Q6PeK_RILiheG0kKfdtcgWa7m2MMt7yHsk2EurJT_hY26beorQAYz76MU"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent"></div>
+        <div class="relative z-10 p-space-lg md:p-space-xl flex flex-col gap-space-xs">
+          <div class="flex items-center gap-space-sm text-primary font-label-sm text-label-sm uppercase tracking-widest">
+            <span class="material-symbols-outlined text-[16px]">menu_book</span>
+            <span>Madinah Mushaf Digital Foil</span>
+          </div>
+          <p class="font-headline-sm text-headline-sm text-on-surface max-w-xl">
+            "Verily, in the remembrance of Allah do hearts find rest."
+          </p>
+          <div class="flex items-center justify-between pt-space-xs text-on-surface-variant font-label-sm text-label-sm">
+            <span>Surah Ar-Ra'd (13:28) • Page 252</span>
+            <span class="inline-flex items-center gap-1 text-secondary">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              Lossless Hafs Edition
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Live Prayer Horizon & Compass Cockpit Card -->
+      <div class="lg:col-span-5 rounded-2xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg flex flex-col justify-between shadow-xl tilt-card">
+        <!-- Header Widget info -->
+        <div class="flex items-center justify-between pb-space-md">
+          <div class="flex flex-col">
+            <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Active Calculation Engine</span>
+            <span class="font-headline-sm text-headline-sm text-primary">Makkah Umm al-Qura</span>
+          </div>
+          <div class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-1 rounded-full text-secondary font-label-sm text-label-sm">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+            <span>Sync Verified</span>
+          </div>
+        </div>
+        <!-- Active Prayer Spotlight (Live Clock) -->
+        <div class="p-space-md rounded-xl bg-surface-container-high/90 relative overflow-hidden my-space-xs">
+          <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-primary/10 rounded-full blur-xl pointer-events-none"></div>
+          <div class="flex items-center justify-between mb-space-xs">
+            <span class="font-label-md text-label-md uppercase tracking-widest text-primary">Current Waqt • <span id="current-prayer-name">Asr</span></span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant" id="next-prayer-label">Next: Maghrib in 1h 42m</span>
+          </div>
+          <div class="flex items-baseline justify-between">
+            <div class="flex items-baseline gap-space-xs">
+              <span id="live-clock" class="font-display-lg text-display-lg text-on-surface font-light leading-none">--:--</span>
+              <span id="live-ampm" class="font-label-md text-label-md text-on-surface-variant">--</span>
+            </div>
+            <div class="text-right">
+              <span class="font-label-sm text-label-sm text-primary font-semibold block">JAMA'AH IN</span>
+              <span class="font-headline-sm text-headline-sm text-secondary font-mono">14:28</span>
+            </div>
+          </div>
+        </div>
+        <!-- Prayer Timeline Rail -->
+        <div class="py-space-md">
+          <div class="flex justify-between items-center text-center font-label-sm text-label-sm text-on-surface-variant mb-2">
+            <div class="opacity-60"><span>Fajr</span><br/><span class="font-mono text-on-surface">05:12</span></div>
+            <div class="opacity-60"><span>Sunrise</span><br/><span class="font-mono text-on-surface">06:34</span></div>
+            <div class="opacity-60"><span>Dhuhr</span><br/><span class="font-mono text-on-surface">12:30</span></div>
+            <div class="text-primary font-bold"><span class="flex items-center justify-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Asr</span><span class="font-mono text-primary">03:48</span></div>
+            <div class="opacity-60"><span>Maghrib</span><br/><span class="font-mono text-on-surface">06:26</span></div>
+            <div class="opacity-60"><span>Isha</span><br/><span class="font-mono text-on-surface">07:46</span></div>
+          </div>
+          <!-- Timeline Sun Arc Bar -->
+          <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden relative">
+            <div class="h-full bg-gradient-to-r from-secondary-container via-primary to-primary-container" id="prayer-progress-bar"></div>
+          </div>
+        </div>
+        <!-- Mini Live Qibla Heading -->
+        <div class="pt-space-sm flex items-center justify-between rounded-xl bg-surface-container/60 p-space-sm">
+          <div class="flex items-center gap-space-sm">
+            <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-[20px]">explore</span>
+            </div>
+            <div>
+              <div class="font-label-md text-label-md text-on-surface">63.4° ENE Qibla Horizon</div>
+              <div class="font-label-sm text-label-sm text-on-surface-variant">Calibrated with True North geoid</div>
+            </div>
+          </div>
+          <span class="font-label-md text-label-md text-primary font-mono px-space-xs py-1 rounded bg-primary/10">0.02° dev</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-lg bg-surface-container-lowest/40 border-y border-surface-container-high/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal">
+      <div class="text-center">
+        <div class="stat-num font-display-lg text-[2rem] leading-none text-primary font-semibold" data-target="10000" id="stat-users">0</div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Active Users</div>
+      </div>
+      <div class="text-center">
+        <div class="stat-num font-display-lg text-[2rem] leading-none text-secondary font-semibold" data-target="45" id="stat-countries">0</div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Countries</div>
+      </div>
+      <div class="text-center">
+        <div class="stat-num font-display-lg text-[2rem] leading-none text-tertiary font-semibold" data-target="14000" id="stat-masjids">0</div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Masjids Registered</div>
+      </div>
+      <div class="text-center">
+        <div class="stat-num font-display-lg text-[2rem] leading-none text-primary font-semibold">0</div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Trackers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Divider -->
+<div class="section-divider">
+  <svg viewBox="0 0 1200 20" preserveAspectRatio="none" height="20">
+    <defs><linearGradient id="div1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:transparent"/><stop offset="50%" style="stop-color:#fdcc73"/><stop offset="100%" style="stop-color:transparent"/></linearGradient></defs>
+    <path d="M0,10 Q150,0 300,10 Q450,20 600,10 Q750,0 900,10 Q1050,20 1200,10" stroke="url(#div1)" stroke-width="1" fill="none"/>
+    <circle cx="600" cy="10" r="3" fill="#fdcc73"/>
+    <circle cx="300" cy="10" r="2" fill="#fdcc73" opacity="0.5"/>
+    <circle cx="900" cy="10" r="2" fill="#fdcc73" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: PROTECT / HOW PHONES PULL US AWAY
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-xl bg-surface-container-lowest/50 relative" id="protect">
+  <div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+    <!-- Grid Split -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+      <div class="lg:col-span-5 relative rounded-2xl overflow-hidden shadow-2xl bg-surface-container-low min-h-[420px] reveal-left">
+        <img alt="Mindful Muslim worshipper sitting quietly in contemplation in a dark historic mosque with amber light" class="w-full h-full object-cover min-h-[420px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-x9aqIgRowO5WUnQGCOc0FolMFuWTr4j3IJ3nRASt5UMv-eeq_yBeP8zwxGATbwkuFAuRpPBOBGcMHIo1i2tBzjqesiQnlHqDepOQp-3Or5u-1WFvW-fiN5gw-gZ96z0GXrrrS4OyI8QmDEEcvWxs-YbKS6RsBbA39Fv0gxMCE7GmS7ZtGLL8zHP5FYqhxCDI7sqiy2gLGTEcxXbhr_lLnq7WyNVfxv9nPcxhrrEm"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+        <div class="absolute bottom-space-md left-space-md right-space-md p-space-md rounded-xl bg-surface-container-high/90 backdrop-blur-md">
+          <p class="font-headline-sm text-headline-sm text-primary italic leading-snug">
+            "Your heart wasn't built for endless feeds. It was sculpted for remembrance."
+          </p>
+        </div>
+      </div>
+      <div class="lg:col-span-7 flex flex-col justify-center reveal-right">
+        <div class="inline-flex items-center gap-2 text-primary font-label-sm text-label-sm uppercase tracking-widest mb-space-sm">
+          <span class="material-symbols-outlined text-[16px]">healing</span>
+          <span>The Digital Tribulation</span>
+        </div>
+        <h2 class="font-headline-lg text-headline-lg md:text-[2.75rem] md:leading-tight text-on-surface mb-space-md">
+          Do any of these moments sound like you? Most of us know every single one.
+        </h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-space-md leading-relaxed">
+          They don't make you a bad Muslim. They make you human living inside an economy that profits from scattering your presence. Saaheb was constructed as an unwavering shield between your spiritual resolve and weaponized notifications.
+        </p>
+        <div class="p-space-md rounded-xl bg-surface-container-high/40 text-on-surface flex items-start gap-space-sm">
+          <span class="material-symbols-outlined text-primary text-[24px]">verified_user</span>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            We reject user monetization, programmatic ad brokers, behavior profiling, and infinite reels. We return your device to its rightful function: a contemplative instrument of barakah.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- 4 Relatable Moment Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+      <div class="p-space-lg rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 flex flex-col justify-between group tilt-card reveal reveal-delay-1">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-error mb-space-md group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-[24px]">bedtime_off</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">Late at Night</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            Swiping endlessly past midnight. Your alarm rings for Fajr, but your mind is exhausted, and the sacred dawn prayer slips into qadha.
+          </p>
+        </div>
+        <div class="mt-space-md pt-space-xs font-label-sm text-label-sm text-primary flex items-center gap-1">
+          <span>Solution: Fajr Sentinel Mode</span>
+          <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </div>
+      </div>
+      <div class="p-space-lg rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 flex flex-col justify-between group tilt-card reveal reveal-delay-2">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary mb-space-md group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-[24px]">crisis_alert</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">In a Weak Moment</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            Trapped in compulsive triggers behind a glowing screen, swallowed by regret and shame before you can step back to take wudu.
+          </p>
+        </div>
+        <div class="mt-space-md pt-space-xs font-label-sm text-label-sm text-primary flex items-center gap-1">
+          <span>Solution: Immediate Istighfar Intercept</span>
+          <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </div>
+      </div>
+      <div class="p-space-lg rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 flex flex-col justify-between group tilt-card reveal reveal-delay-3">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-secondary mb-space-md group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-[24px]">notifications_paused</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">When It's Time to Pray</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            The Athan sounds, but you dismiss it for "five more minutes." Work pings, group chats flood in, and Asr has vanished into sunset.
+          </p>
+        </div>
+        <div class="mt-space-md pt-space-xs font-label-sm text-label-sm text-primary flex items-center gap-1">
+          <span>Solution: Fullscreen Calm Athan</span>
+          <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </div>
+      </div>
+      <div class="p-space-lg rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 flex flex-col justify-between group tilt-card reveal reveal-delay-4">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-tertiary mb-space-md group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-[24px]">auto_stories</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">After Ramadan</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            The high spiritual tide recedes. The physical Quran rests unopened on the shelf, leaving a quiet guilt that stays for months.
+          </p>
+        </div>
+        <div class="mt-space-md pt-space-xs font-label-sm text-label-sm text-primary flex items-center gap-1">
+          <span>Solution: Micro-Khatmah Pacing</span>
+          <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </div>
+      </div>
+    </div>
+    <!-- Solution Banner -->
+    <div class="rounded-2xl p-space-lg md:p-space-xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-container-high relative overflow-hidden shadow-xl reveal">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-space-lg">
+        <div class="flex flex-col gap-space-xs max-w-2xl">
+          <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-semibold">Divine Assurance</span>
+          <p class="font-headline-md text-headline-md text-on-surface">
+            "Say, 'O My servants who have transgressed against themselves, do not despair of the mercy of Allah. Indeed, Allah forgives all sins.'"
+          </p>
+          <span class="font-label-md text-label-md text-on-surface-variant font-mono">Surah Az-Zumar (39:53)</span>
+        </div>
+        <div class="flex flex-col items-start md:items-end gap-space-xs min-w-[220px]">
+          <span class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Pure On-Device Architecture
+          </span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">lock</span>
+            Zero Telemetry Collection
+          </span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">offline_bolt</span>
+            100% Offline Capability
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Divider -->
+<div class="section-divider">
+  <svg viewBox="0 0 1200 20" preserveAspectRatio="none" height="20">
+    <defs><linearGradient id="div2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:transparent"/><stop offset="50%" style="stop-color:#4edea3"/><stop offset="100%" style="stop-color:transparent"/></linearGradient></defs>
+    <path d="M0,10 Q200,20 400,10 Q600,0 800,10 Q1000,20 1200,10" stroke="url(#div2)" stroke-width="1" fill="none"/>
+    <circle cx="600" cy="10" r="3" fill="#4edea3"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: THE FOUR PILLARS
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-xl" id="prayer">
+  <div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+    <div class="flex flex-col items-center text-center max-w-3xl mx-auto reveal">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary mb-space-xs">Harmonious Ecosystem</span>
+      <h2 class="font-headline-lg text-headline-lg md:text-[3rem] text-primary mb-space-xs">
+        The Four Foundations of Saaheb
+      </h2>
+      <p class="font-body-md text-body-md text-on-surface-variant">
+        Each pillar was engineered with Islamic psychologists and senior scholars to support lifelong istiqamah (steadfastness).
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+      <!-- Pillar 1 -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all duration-300 relative group flex flex-col justify-between tilt-card reveal reveal-delay-1">
+        <div class="flex flex-col gap-space-md">
+          <div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary group-hover:shadow-[0_0_24px_rgba(223,177,91,0.25)] transition-all">
+            <span class="material-symbols-outlined text-[26px]">shield</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Pillar I</span>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Protect (Hisn)</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Emergency pause locks, trigger reflection screens, and instant Istighfar shortcuts before compulsive actions take hold.
+          </p>
+        </div>
+        <ul class="pt-space-md flex flex-col gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Friction Prompts</li>
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Dua shield overrides</li>
+        </ul>
+      </div>
+      <!-- Pillar 2 -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all duration-300 relative group flex flex-col justify-between tilt-card reveal reveal-delay-2">
+        <div class="flex flex-col gap-space-md">
+          <div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary group-hover:shadow-[0_0_24px_rgba(223,177,91,0.25)] transition-all">
+            <span class="material-symbols-outlined text-[26px]">mosque</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Pillar II</span>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Prayer (Salah)</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Astronomical geoid accuracy with zero latitude rounding. Calibrated Athan tones from Al-Masjid an-Nabawi and Al-Aqsa.
+          </p>
+        </div>
+        <ul class="pt-space-md flex flex-col gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Sub-second Waqt alerts</li>
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Live Masjid Iqamah sync</li>
+        </ul>
+      </div>
+      <!-- Pillar 3 -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all duration-300 relative group flex flex-col justify-between tilt-card reveal reveal-delay-3" id="quran">
+        <div class="flex flex-col gap-space-md">
+          <div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary group-hover:shadow-[0_0_24px_rgba(223,177,91,0.25)] transition-all">
+            <span class="material-symbols-outlined text-[26px]">menu_book</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Pillar III</span>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Quran (Tilawah)</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            1:1 vectorized King Fahd Complex printing. High-definition ayah highlighting, offline recitations, and tafsir split-folios.
+          </p>
+        </div>
+        <ul class="pt-space-md flex flex-col gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>15-line Madinah standard</li>
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Ibn Kathir &amp; Sa'di tafsir</li>
+        </ul>
+      </div>
+      <!-- Pillar 4 -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all duration-300 relative group flex flex-col justify-between tilt-card reveal reveal-delay-4" id="habits">
+        <div class="flex flex-col gap-space-md">
+          <div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary group-hover:shadow-[0_0_24px_rgba(223,177,91,0.25)] transition-all">
+            <span class="material-symbols-outlined text-[26px]">all_inclusive</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Pillar IV</span>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Habits (Sunnah)</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Haptic digital bead ring with authentic adhkar counts. Daily Sunnah tracker for Duha, Tahajjud, and Monday/Thursday fasts.
+          </p>
+        </div>
+        <ul class="pt-space-md flex flex-col gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Authentic fortress adhkar</li>
+          <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-primary"></span>Private streak journals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Divider -->
+<div class="section-divider">
+  <svg viewBox="0 0 1200 20" preserveAspectRatio="none" height="20">
+    <defs><linearGradient id="div3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:transparent"/><stop offset="50%" style="stop-color:#ead297"/><stop offset="100%" style="stop-color:transparent"/></linearGradient></defs>
+    <path d="M0,5 L100,15 L200,5 L300,15 L400,5 L500,15 L600,5 L700,15 L800,5 L900,15 L1000,5 L1100,15 L1200,5" stroke="url(#div3)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: DEEP FEATURE SHOWCASES
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-xl bg-surface-container-lowest/70 flex flex-col gap-space-xl" id="masjids">
+  <div class="max-w-7xl mx-auto w-full flex flex-col gap-space-xl">
+    <!-- Showcase 1: Quran True Mushaf Page Mode -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+      <div class="lg:col-span-6 flex flex-col gap-space-md reveal-left">
+        <div class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm uppercase tracking-widest">
+          <span class="material-symbols-outlined text-[18px]">verified</span>
+          <span>Authentic Page Fidelity</span>
+        </div>
+        <h3 class="font-headline-lg text-headline-lg md:text-[2.5rem] text-on-surface leading-tight">
+          True 15-Line Madinah Mushaf. Not just raw text on a phone screen.
+        </h3>
+        <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Every hafiz knows the importance of spatial memory. Saaheb preserves the precise layout of the venerable King Fahd Complex printing. Ayahs conclude exactly at line margins, allowing your visual memory to anchor every Juz without mental friction.
+        </p>
+        <div class="grid grid-cols-2 gap-space-md pt-space-xs">
+          <div class="p-space-sm rounded-xl bg-surface-container-low">
+            <span class="font-label-sm text-label-sm text-primary uppercase font-bold block mb-1">Tajweed Guidance</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">Luminous gold indicators for ikhfa, ghunnah, and qalqalah rules.</span>
+          </div>
+          <div class="p-space-sm rounded-xl bg-surface-container-low">
+            <span class="font-label-sm text-label-sm text-primary uppercase font-bold block mb-1">Lossless Recitations</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">Master recordings by Al-Husary, Al-Minshawi, and Al-Afasy.</span>
+          </div>
+        </div>
+      </div>
+      <!-- Interactive Foliar Preview Mock -->
+      <div class="lg:col-span-6 p-space-md md:p-space-lg rounded-2xl bg-surface-container-low shadow-2xl relative reveal-right tilt-card">
+        <div class="rounded-xl bg-surface-container-lowest p-space-md md:p-space-lg flex flex-col gap-space-md">
+          <div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm border-b border-surface-container-high pb-2">
+            <span>Juz' 1 • Al-Baqarah (2:1-5)</span>
+            <span class="text-primary font-mono">Page 2</span>
+          </div>
+          <div class="text-center py-space-sm flex flex-col gap-space-md text-primary">
+            <div class="font-headline-md text-headline-md opacity-90 leading-loose">
+              بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+            </div>
+            <div class="text-right text-on-surface text-[1.35rem] leading-[2.6rem] tracking-wide font-light">
+              الٓمٓ ﴿١﴾ ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ ﴿٢﴾ ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ ﴿٣﴾
+            </div>
+          </div>
+          <!-- Audio Player Dock -->
+          <div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-high">
+            <div class="flex items-center gap-space-sm">
+              <button class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+              </button>
+              <div>
+                <div class="font-label-sm text-label-sm text-on-surface font-semibold">Mahmoud Khalil Al-Husary</div>
+                <div class="font-label-sm text-label-sm text-on-surface-variant">Ayah 2 • Murattal</div>
+              </div>
+            </div>
+            <span class="font-mono text-label-sm text-primary">00:44 / 01:12</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Showcase 2: Mosque & Jama'ah Locator -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+      <div class="lg:col-span-6 order-2 lg:order-1 reveal-left tilt-card">
+        <div class="mosque-finder-preview" role="img" aria-label="Saaheb mosque finder app preview showing a nearby mosque on a map and its facilities">
+          <div class="mosque-finder-map">
+            <div class="mosque-map-river"></div>
+            <div class="mosque-map-road road-one"></div>
+            <div class="mosque-map-road road-two"></div>
+            <div class="mosque-map-road road-three"></div>
+            <span class="mosque-map-label" style="top:27%;left:13%">GREENWOOD PARK</span>
+            <span class="mosque-map-label" style="top:56%;left:56%">OAK STREET</span>
+            <span class="mosque-map-label" style="top:72%;left:13%">RIVERSIDE</span>
+            <span class="mosque-map-label" style="top:18%;left:65%">MARKET ROAD</span>
+            <div class="mosque-user-dot" aria-hidden="true"></div>
+            <div class="mosque-map-pin" aria-hidden="true"><span class="material-symbols-outlined">mosque</span></div>
+          </div>
+          <div class="mosque-finder-controls" aria-hidden="true">
+            <span class="material-symbols-outlined">layers</span>
+            <span class="material-symbols-outlined">my_location</span>
+          </div>
+          <div class="mosque-result-card">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-1.5 text-emerald-800 text-[10px] font-bold uppercase tracking-wider mb-1">
+                  <span class="material-symbols-outlined text-[14px]">location_on</span> Nearest Masjid Found
+                </div>
+                <h4 class="text-[17px] leading-tight font-bold text-[#1d3027]">Masjid Al-Ikhlas</h4>
+                <p class="mt-1 text-xs text-[#64736a]">0.4 mi · 6 min walk · Open</p>
+              </div>
+              <div class="flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-xs font-bold text-amber-700">
+                <span class="material-symbols-outlined text-[14px]">star</span>4.8
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              <span class="mosque-result-feature"><span class="material-symbols-outlined text-[14px] text-emerald-700">female</span>Dedicated Sisters Space</span>
+              <span class="mosque-result-feature"><span class="material-symbols-outlined text-[14px] text-emerald-700">water_drop</span>Full Wudu Area</span>
+              <span class="mosque-result-feature"><span class="material-symbols-outlined text-[14px] text-emerald-700">accessible</span>Wheelchair Access</span>
+              <span class="mosque-result-feature"><span class="material-symbols-outlined text-[14px] text-emerald-700">translate</span>Multilingual Khutbah</span>
+            </div>
+            <div class="mt-3 flex items-center justify-between border-t border-[#edf0eb] pt-3">
+              <div class="text-[11px] text-[#64736a]">Next prayer <strong class="text-[#273c31]">Dhuhr · 12:18 PM</strong></div>
+              <span class="inline-flex items-center gap-1 rounded-full bg-[#16835d] px-3 py-2 text-[11px] font-bold text-white">
+                Directions <span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-6 order-1 lg:order-2 flex flex-col gap-space-md reveal-right">
+        <div class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm uppercase tracking-widest">
+          <span class="material-symbols-outlined text-[18px]">location_on</span>
+          <span>Presence in Congregation</span>
+        </div>
+        <h3 class="font-headline-lg text-headline-lg md:text-[2.5rem] text-on-surface leading-tight">
+          Never Miss Jama'ah. Live Iqamah countdowns in your neighborhood.
+        </h3>
+        <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Find a nearby masjid, check its next prayer, and see the facilities that matter before you set out. Saaheb brings local results and clear directions together in one simple view.
+        </p>
+      </div>
+    </div>
+    <!-- Showcase 3: Sensor-Fused AR Qibla Compass -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+      <div class="lg:col-span-6 flex flex-col gap-space-md reveal-left">
+        <div class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm uppercase tracking-widest">
+          <span class="material-symbols-outlined text-[18px]">near_me</span>
+          <span>Spherical Geodesy Precision</span>
+        </div>
+        <h3 class="font-headline-lg text-headline-lg md:text-[2.5rem] text-on-surface leading-tight">
+          Calibrated Directly Towards the Ka'bah with Sub-Degree Resolution.
+        </h3>
+        <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Standard compass apps jitter near metal frames and magnetic anomalies. Saaheb harmonizes three-axis gyroscope data with true magnetic declination models to provide steady, unshakable alignment wherever your travels lead.
+        </p>
+        <div class="p-space-md rounded-xl bg-surface-container-low flex items-center gap-space-md">
+          <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+            <span class="material-symbols-outlined text-[24px]">verified</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-label-md text-label-md text-on-surface font-semibold">Great-Circle Geodesic Mathematics</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">Continuous calculation based on WGS-84 reference ellipsoid coordinates.</span>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-6 rounded-2xl overflow-hidden shadow-2xl relative min-h-[400px] reveal-right tilt-card">
+        <img alt="Night view of the Holy Kaaba in Makkah with clock tower lit up and worshippers circumambulating" class="w-full h-full object-cover min-h-[400px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYVqxnLtRVMVQQkaB3CUFgPYbm3eq_L0XHDnYIomZcEynIcd42-_fO0eYuOYHMXsnIJPxRYHceNadM-bNUF8J0nMS8m5jn0OjGSqMBHrsKNGJGX9qosTHgxG0sbroCBmQKtD21UeaTl7jA-AJadLu3ayZ64FJbEWlBNgix-yHaL9YoCzPYC0qKtXCTi-GfQBas0ST19gUL33CYQjp6InuEYuKcVHvFKSw87ZV3lmZv"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/30 to-transparent"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-space-md">
+          <div class="w-48 h-48 rounded-full border border-primary/40 bg-surface-container-lowest/80 backdrop-blur-md flex flex-col items-center justify-center text-center p-space-sm shadow-[0_0_32px_rgba(223,177,91,0.2)]">
+            <span class="material-symbols-outlined text-primary text-[32px] animate-bounce">arrow_upward</span>
+            <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mt-1">Facing Ka'bah</span>
+            <span class="font-headline-sm text-headline-sm text-primary font-mono mt-0.5">21.4225° N</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">39.8262° E</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Divider -->
+<div class="section-divider">
+  <svg viewBox="0 0 1200 20" preserveAspectRatio="none" height="20">
+    <defs><linearGradient id="div4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:transparent"/><stop offset="50%" style="stop-color:#fdcc73"/><stop offset="100%" style="stop-color:transparent"/></linearGradient></defs>
+    <path d="M0,10 Q150,0 300,10 Q450,20 600,10 Q750,0 900,10 Q1050,20 1200,10" stroke="url(#div4)" stroke-width="1" fill="none"/>
+    <circle cx="600" cy="10" r="3" fill="#fdcc73"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: DOWNLOAD HUB
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-xl" id="downloads">
+  <div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+    <div class="flex flex-col items-center text-center max-w-3xl mx-auto reveal">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary mb-space-xs">Universal Digital Companion</span>
+      <h2 class="font-headline-lg text-headline-lg md:text-[3rem] text-primary mb-space-xs">
+        Native Architecture for Every Screen
+      </h2>
+      <p class="font-body-md text-body-md text-on-surface-variant">
+        Engineered natively in Swift and Rust for ultra-low battery consumption. No web views, no bloatware, pure 60fps responsiveness.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+      <!-- macOS -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all flex flex-col justify-between shadow-lg tilt-card reveal reveal-delay-1">
+        <div class="flex flex-col gap-space-md">
+          <div class="flex items-center justify-between">
+            <span class="material-symbols-outlined text-[36px] text-primary">laptop_mac</span>
+            <span class="px-2 py-1 rounded bg-surface-container-highest font-mono text-label-sm text-on-surface-variant">v2.4.1</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface">macOS Companion</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            Menu bar Athan countdown, live desktop wallpaper widgets, and universal keyboard shortcuts for quick Quran lookup.
+          </p>
+          <div class="flex flex-col gap-1 text-on-surface-variant font-label-sm text-label-sm">
+            <span>• Universal Apple Silicon (M1/M2/M3/M4) &amp; Intel</span>
+            <span>• macOS Sonoma &amp; Sequoia verified</span>
+          </div>
+        </div>
+        <div class="pt-space-lg">
+          <a class="w-full py-3 rounded-xl bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-space-xs transition-colors ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            <span>Download for macOS (.dmg)</span>
+          </a>
+        </div>
+      </div>
+      <!-- Windows -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all flex flex-col justify-between shadow-lg tilt-card reveal reveal-delay-2">
+        <div class="flex flex-col gap-space-md">
+          <div class="flex items-center justify-between">
+            <span class="material-symbols-outlined text-[36px] text-primary">desktop_windows</span>
+            <span class="px-2 py-1 rounded bg-surface-container-highest font-mono text-label-sm text-on-surface-variant">v2.4.1</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Windows 11 &amp; 10</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            System tray presence, ambient Athan chimes, discreet prayer notification banners, and dark OLED contrast themes.
+          </p>
+          <div class="flex flex-col gap-1 text-on-surface-variant font-label-sm text-label-sm">
+            <span>• x64 &amp; ARM64 Native executable</span>
+            <span>• Microsoft Store &amp; Standalone installer</span>
+          </div>
+        </div>
+        <div class="pt-space-lg">
+          <a class="w-full py-3 rounded-xl bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-space-xs transition-colors ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            <span>Download for Windows (.exe)</span>
+          </a>
+        </div>
+      </div>
+      <!-- Linux / Open Ecosystem -->
+      <div class="p-space-lg rounded-2xl bg-surface-container hover:bg-surface-container-high transition-all flex flex-col justify-between shadow-lg tilt-card reveal reveal-delay-3">
+        <div class="flex flex-col gap-space-md">
+          <div class="flex items-center justify-between">
+            <span class="material-symbols-outlined text-[36px] text-primary">terminal</span>
+            <span class="px-2 py-1 rounded bg-surface-container-highest font-mono text-label-sm text-on-surface-variant">Open Waqf</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Linux &amp; Mobile</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            Packaged for privacy-centric systems via Flatpak, AppImage, Arch AUR, alongside our iOS TestFlight and Android APK builds.
+          </p>
+          <div class="flex flex-col gap-1 text-on-surface-variant font-label-sm text-label-sm">
+            <span>• AppImage &amp; Flatpak sandboxed</span>
+            <span>• iOS App Store &amp; Google Play Store</span>
+          </div>
+        </div>
+        <div class="pt-space-lg">
+          <a class="w-full py-3 rounded-xl bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-space-xs transition-colors ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined text-[18px]">install_mobile</span>
+            <span>Get Linux / Mobile Stores</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Divider -->
+<div class="section-divider">
+  <svg viewBox="0 0 1200 20" preserveAspectRatio="none" height="20">
+    <defs><linearGradient id="div5" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:transparent"/><stop offset="50%" style="stop-color:#4edea3"/><stop offset="100%" style="stop-color:transparent"/></linearGradient></defs>
+    <path d="M0,10 Q200,20 400,10 Q600,0 800,10 Q1000,20 1200,10" stroke="url(#div5)" stroke-width="1" fill="none"/>
+    <circle cx="600" cy="10" r="3" fill="#4edea3"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6: WAQF / PATRONS
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-xl bg-surface-container-lowest/50" id="patrons">
+  <div class="max-w-5xl mx-auto flex flex-col gap-space-xl">
+    <div class="flex flex-col items-center text-center reveal">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary mb-space-xs">Uncompromising Islamic Waqf</span>
+      <h2 class="font-headline-lg text-headline-lg md:text-[2.75rem] text-primary mb-space-xs">
+        Free Forever. Sustained by Sincere Patrons.
+      </h2>
+      <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+        We believe your prayer, Quran reading, and daily repentance must never be gated behind paywalls or surveillance ad brokers.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-stretch">
+      <!-- Waqf Free Sanctuary -->
+      <div class="p-space-xl rounded-2xl bg-surface-container-low flex flex-col justify-between shadow-md tilt-card reveal reveal-delay-1">
+        <div>
+          <div class="flex items-center justify-between mb-space-sm">
+            <span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Public Waqf Endowment</span>
+            <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Available to All</span>
+          </div>
+          <div class="flex items-baseline gap-space-xs mb-space-md">
+            <span class="font-display-lg text-display-lg text-on-surface">$0</span>
+            <span class="font-label-md text-label-md text-on-surface-variant">/ forever</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+            Complete, full-featured access with zero degradation, zero advertisements, and complete privacy guaranteed by our Waqf charter.
+          </p>
+          <ul class="flex flex-col gap-space-sm text-on-surface font-body-sm text-body-sm">
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[18px]">check</span> Complete 15-line Madinah Mushaf</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[18px]">check</span> Millisecond Accurate Prayer Times</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[18px]">check</span> AR Sensor-Fused Qibla Compass</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[18px]">check</span> 100% Offline Adhkar &amp; Tasbih Counter</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[18px]">check</span> Zero Ads, Zero Trackers, Zero Telemetry</li>
+          </ul>
+        </div>
+        <div class="pt-space-xl">
+          <a class="w-full py-3.5 rounded-full bg-surface-container-highest text-on-surface hover:text-primary font-label-lg text-label-lg font-semibold flex items-center justify-center transition-colors ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">
+            Start Using Now
+          </a>
+        </div>
+      </div>
+      <!-- Barakah Patron Guild -->
+      <div class="p-space-xl rounded-2xl bg-surface-container-high/70 relative overflow-hidden flex flex-col justify-between shadow-2xl tilt-card reveal reveal-delay-2">
+        <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div>
+          <div class="flex items-center justify-between mb-space-sm">
+            <span class="font-label-md text-label-md uppercase tracking-wider text-primary font-semibold">Barakah Patron Guild</span>
+            <span class="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-bold">Sadaqah Jariyah</span>
+          </div>
+          <div class="flex items-baseline gap-space-xs mb-space-md">
+            <span class="font-display-lg text-display-lg text-primary">$4.99</span>
+            <span class="font-label-md text-label-md text-on-surface-variant">/ month</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+            Fund server operations for vulnerable users globally while unlocking lossless cloud syncing and archival recordings.
+          </p>
+          <ul class="flex flex-col gap-space-sm text-on-surface font-body-sm text-body-sm">
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[18px]">check</span> Everything included in the Free tier</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[18px]">check</span> End-to-end encrypted multi-device cloud bookmark sync</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[18px]">check</span> High-Res 24-bit studio reciter archives</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[18px]">check</span> Direct annual Waqf impact report &amp; voting rights</li>
+            <li class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[18px]">check</span> Continuous Sadaqah Jariyah rewards insha'Allah</li>
+          </ul>
+        </div>
+        <div class="pt-space-xl">
+          <a class="w-full py-3.5 rounded-full bg-primary text-on-primary hover:shadow-[0_0_24px_rgba(223,177,91,0.5)] font-label-lg text-label-lg font-semibold flex items-center justify-center transition-all ripple-btn btn-glow" href="https://amanapp.dev/" target="_blank" rel="noopener">
+            Join the Patron Circle
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7: TESTIMONIALS & INQUIRY FORM
+══════════════════════════════════════════ -->
+<section class="w-full px-margin-mobile md:px-margin py-space-xl">
+  <div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+    <!-- Scholars & Engineers Testimonials -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+      <div class="p-space-lg rounded-2xl bg-surface-container flex flex-col justify-between tilt-card reveal reveal-delay-1">
+        <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
+          "Finally, an application that honors the sanctity of attention. The lack of algorithmic noise allows genuine khushu' to return to daily prayers."
+        </p>
+        <div class="flex items-center gap-space-sm pt-space-xs border-t border-surface-container-high">
+          <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">SM</div>
+          <div class="flex flex-col">
+            <span class="font-label-md text-label-md text-on-surface font-semibold">Dr. Shaykh Tariq Al-Madani</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Islamic Jurisprudence Fellow, UK</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-space-lg rounded-2xl bg-surface-container flex flex-col justify-between tilt-card reveal reveal-delay-2">
+        <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
+          "The true Madinah 15-line print reproduction is flawless. As a memorizer, not having line offsets between phone and Mushaf is a huge blessing."
+        </p>
+        <div class="flex items-center gap-space-sm pt-space-xs border-t border-surface-container-high">
+          <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">ZK</div>
+          <div class="flex flex-col">
+            <span class="font-label-md text-label-md text-on-surface font-semibold">Zaid Al-Khatib</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Hafiz &amp; Systems Architect, Toronto</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-space-lg rounded-2xl bg-surface-container flex flex-col justify-between tilt-card reveal reveal-delay-3">
+        <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
+          "Audited their code for our community masjid. Zero external analytics pings, no third-party SDK trackers. Completely truthful to its Amanah."
+        </p>
+        <div class="flex items-center gap-space-sm pt-space-xs border-t border-surface-container-high">
+          <div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container font-bold">NA</div>
+          <div class="flex flex-col">
+            <span class="font-label-md text-label-md text-on-surface font-semibold">Nuruddin Amin</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Cybersecurity Researcher, Munich</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Contact & Masjid Schedule Submission -->
+    <div class="rounded-2xl p-space-lg md:p-space-xl bg-surface-container-low max-w-4xl mx-auto w-full shadow-xl reveal">
+      <div class="flex flex-col items-center text-center mb-space-lg">
+        <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary mb-space-xs">Masjid Registry &amp; Scholar Inquiries</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface">
+          Submit Local Mosque Schedules or Consult with the Waqf
+        </h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl">
+          Are you an Imam, trustee, or community volunteer? Help us keep prayer times and Iqamah records accurate for your community.
+        </p>
+      </div>
+      <form class="grid grid-cols-1 md:grid-cols-2 gap-space-md" id="contact-form" onsubmit="handleFormSubmit(event)">
+        <div class="flex flex-col gap-1.5">
+          <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Your Full Name</label>
+          <input class="w-full px-space-md py-2.5 rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:bg-surface-container-high" id="form-name" placeholder="Brother / Sister Name" required="" type="text"/>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Email Address</label>
+          <input class="w-full px-space-md py-2.5 rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:bg-surface-container-high" id="form-email" placeholder="contact@example.com" required="" type="email"/>
+        </div>
+        <div class="flex flex-col gap-1.5 md:col-span-2">
+          <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Inquiry Type</label>
+          <select class="w-full px-space-md py-2.5 rounded-lg bg-surface-container-high/60 text-on-surface focus:outline-none focus:bg-surface-container-high" id="form-type">
+            <option value="masjid">Submit / Update Local Masjid Iqamah Times</option>
+            <option value="scholar">Scholar / Astronomical Review Consultation</option>
+            <option value="patron">Waqf Patron Circle &amp; Institutional Endowment</option>
+            <option value="feedback">Product Feedback &amp; Bug Report</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1.5 md:col-span-2">
+          <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Message &amp; Masjid Details</label>
+          <textarea class="w-full px-space-md py-2.5 rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:bg-surface-container-high resize-none" id="form-message" placeholder="Masjid name, city, official website or prayer sheet URL..." required="" rows="3"></textarea>
+        </div>
+        <div class="md:col-span-2 flex flex-col items-center gap-space-sm pt-space-xs">
+          <button class="px-space-xl py-3 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold hover:shadow-[0_0_24px_rgba(223,177,91,0.4)] transition-all ripple-btn btn-glow" type="submit">
+            Transmit to Saaheb Council
+          </button>
+          <div class="hidden text-secondary font-label-sm text-label-sm flex items-center gap-1" id="contact-success">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Jazakallahu Khayran. Your transmission has been preserved.
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+</main>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="w-full py-space-xl mt-space-xl">
+  <div class="w-full px-margin">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-gutter mb-space-xl">
+      <div class="lg:col-span-4 flex flex-col gap-space-md">
+        <div class="flex items-center gap-space-sm">
+          <img class="w-8 h-8 object-contain" src="saaheb.png" alt="" aria-hidden="true"/>
+          <span class="font-headline-sm text-headline-sm text-primary">Saaheb</span>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">An elevated, contemplative sanctuary dedicated to spiritual discipline, ethical privacy, and sacred tranquility in an unquiet modern world.</p>
+        <div class="p-space-md rounded-xl bg-surface-container-low max-w-sm">
+          <div class="flex items-center gap-space-xs text-primary mb-space-xs">
+            <span class="material-symbols-outlined text-[16px]">shield_moon</span>
+            <span class="font-label-md text-label-md uppercase tracking-wider">Endowment Principle (Waqf)</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80">Operating strictly as an uncorrupted digital waqf. No commercial behavioral trackers, no algorithmic persuasion, no monetized sacred attention.</p>
+        </div>
+      </div>
+      <div class="lg:col-span-2 flex flex-col gap-space-sm">
+        <span class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-xs">Sanctuary Spaces</span>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#sanctuary">Overview</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#prayer">Prayer Horizon</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#quran">Sacred Folio</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#habits">Tasbih &amp; Sunnah</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#masjids">Masjid Registry</a>
+      </div>
+      <div class="lg:col-span-2 flex flex-col gap-space-sm">
+        <span class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-xs">Saaheb &amp; Ethics</span>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#protect">Privacy Architecture</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#patrons">Patron Circle</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#downloads">Native Releases</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#sanctuary">Open Methodologies</a>
+      </div>
+      <div class="lg:col-span-4 flex flex-col gap-space-sm">
+        <span class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-xs">Calculation &amp; Heritage</span>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">Astronomical calculation methodologies powered by verified astronomical institutes: Umm al-Qura University (Makkah), Muslim World League (MWL), Egyptian General Authority of Survey, and Islamic Society of North America (ISNA).</p>
+        <div class="flex items-center gap-space-sm text-on-surface-variant text-label-sm font-label-sm mt-space-sm">
+          <span class="inline-block w-2 h-2 rounded-full bg-secondary"></span>
+          <span>Qibla precision aligned via spherical geodesic verification</span>
+        </div>
+      </div>
+    </div>
+    <div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md border-t border-surface-container-high/40">
+      <span class="font-body-sm text-body-sm text-on-surface-variant opacity-70">© 1446 AH / 2025 Saaheb. Preserved as an immutable digital waqf.</span>
+      <div class="flex items-center gap-space-lg">
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#protect">Ethical Charter</a>
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#patrons">Waqf Endowments</a>
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#sanctuary">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* ============================================
+   CONCEPT BANNER
+============================================ */
+const banner = document.getElementById('concept-banner');
+const header = document.getElementById('main-header');
+const BANNER_H = 52;
+
+function dismissBanner() {
+  banner.classList.add('dismissed');
+  header.style.top = '0';
+  document.querySelectorAll('main').forEach(m => m.style.paddingTop = '80px');
+  sessionStorage.setItem('banner_dismissed', '1');
+}
+
+document.getElementById('banner-close').addEventListener('click', dismissBanner);
+
+if (sessionStorage.getItem('banner_dismissed')) {
+  banner.classList.add('dismissed');
+  header.style.top = '0';
+  if (document.querySelector('main')) document.querySelector('main').style.paddingTop = '80px';
+}
+
+/* ============================================
+   SMOOTH SCROLLING
+============================================ */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href');
+    if (targetId.length > 1) {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        const bannerDismissed = banner.classList.contains('dismissed');
+        const offset = bannerDismissed ? 80 : 80 + BANNER_H;
+        const top = targetElement.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+        // Update URL
+        history.pushState(null, '', targetId);
+      }
+    }
+  });
+});
+
+/* ============================================
+   MOBILE MENU
+============================================ */
+function openMobileMenu() {
+  document.getElementById('mobile-menu').classList.add('open');
+  document.getElementById('mobile-menu-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('mobile-menu-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+/* ============================================
+   ADMIN HASH TRIGGER
+============================================ */
+function checkAdminHash() {
+  if (location.hash === '#admin') openPinModal();
+}
+window.addEventListener('hashchange', checkAdminHash);
+checkAdminHash();
+
+/* ============================================
+   LOGO EASTER EGG (5 clicks)
+============================================ */
+let logoClicks = 0, logoTimer;
+document.getElementById('logo-link').addEventListener('click', function(e) {
+  logoClicks++;
+  clearTimeout(logoTimer);
+  logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
+  if (logoClicks >= 5) {
+    e.preventDefault();
+    logoClicks = 0;
+    openPinModal();
+  }
+});
+
+/* ============================================
+   PIN MODAL
+============================================ */
+let pinEntry = '';
+const CORRECT_PIN = '786';
+
+function openPinModal() {
+  pinEntry = '';
+  updatePinDots();
+  document.getElementById('pin-error').classList.add('hidden');
+  document.getElementById('pin-modal').classList.add('open');
+}
+
+function updatePinDots() {
+  document.querySelectorAll('.pin-dot').forEach((dot, i) => {
+    dot.style.background = i < pinEntry.length ? '#fdcc73' : '';
+    dot.className = 'w-3 h-3 rounded-full ' + (i < pinEntry.length ? 'bg-primary' : 'bg-surface-container-high') + ' pin-dot transition-all';
+  });
+}
+
+document.querySelectorAll('.pin-key[data-digit]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (pinEntry.length >= 3) return;
+    pinEntry += btn.getAttribute('data-digit');
+    updatePinDots();
+    if (pinEntry.length === 3) {
+      setTimeout(() => {
+        if (pinEntry === CORRECT_PIN) {
+          document.getElementById('pin-modal').classList.remove('open');
+          openAdminDashboard();
+        } else {
+          document.getElementById('pin-error').classList.remove('hidden');
+          pinEntry = '';
+          updatePinDots();
+        }
+      }, 300);
+    }
+  });
+});
+
+document.getElementById('pin-clear').addEventListener('click', () => {
+  pinEntry = pinEntry.slice(0, -1);
+  updatePinDots();
+  document.getElementById('pin-error').classList.add('hidden');
+});
+
+/* ============================================
+   ADMIN DASHBOARD
+============================================ */
+const STORAGE_KEY = 'saaheb_submissions';
+
+function getSubmissions() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+function saveSubmissions(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+function openAdminDashboard() {
+  document.getElementById('admin-overlay').classList.add('open');
+  renderAdminTable();
+}
+function closeAdmin() {
+  document.getElementById('admin-overlay').classList.remove('open');
+  if (location.hash === '#admin') history.pushState(null, '', ' ');
+}
+
+function renderAdminTable() {
+  const subs = getSubmissions();
+  const tbody = document.getElementById('admin-tbody');
+  const empty = document.getElementById('admin-empty');
+  const unread = subs.filter(s => !s.read).length;
+  document.getElementById('stat-total').textContent = subs.length;
+  document.getElementById('stat-unread').textContent = unread;
+  if (subs.length === 0) {
+    empty.classList.remove('hidden');
+    tbody.innerHTML = '';
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = subs.map((s, i) => `
+    <tr>
+      <td class="text-on-surface-variant opacity-50">${i + 1}</td>
+      <td><span class="read-badge ${s.read ? 'read' : 'unread'}">${s.read ? 'Read' : 'New'}</span></td>
+      <td class="text-on-surface font-medium">${escapeHtml(s.name)}</td>
+      <td class="text-on-surface-variant">${escapeHtml(s.email)}</td>
+      <td class="text-on-surface-variant capitalize">${escapeHtml(s.type)}</td>
+      <td class="text-on-surface-variant max-w-[180px]" style="white-space:pre-wrap;word-break:break-word">${escapeHtml(s.message.slice(0,80))}${s.message.length>80?'…':''}</td>
+      <td class="text-on-surface-variant opacity-70" style="white-space:nowrap;font-size:.7rem">${new Date(s.timestamp).toLocaleString()}</td>
+      <td>
+        <div class="flex gap-1">
+          ${!s.read ? `<button onclick="markRead('${s.id}')" class="px-2 py-1 rounded bg-surface-container-highest text-on-surface-variant hover:text-secondary text-[.65rem] font-semibold uppercase tracking-wide transition-all">Mark Read</button>` : ''}
+          <button onclick="deleteSubmission('${s.id}')" class="px-2 py-1 rounded bg-error/10 text-error hover:bg-error/20 text-[.65rem] font-semibold uppercase tracking-wide transition-all">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function markRead(id) {
+  const subs = getSubmissions();
+  const sub = subs.find(s => s.id === id);
+  if (sub) { sub.read = true; saveSubmissions(subs); renderAdminTable(); }
+}
+function deleteSubmission(id) {
+  if (!confirm('Delete this transmission?')) return;
+  saveSubmissions(getSubmissions().filter(s => s.id !== id));
+  renderAdminTable();
+}
+function clearAllSubmissions() {
+  if (!confirm('Clear ALL transmissions? This cannot be undone.')) return;
+  saveSubmissions([]);
+  renderAdminTable();
+}
+function exportCSV() {
+  const subs = getSubmissions();
+  if (!subs.length) return alert('No submissions to export.');
+  const rows = [['ID','Name','Email','Type','Message','Timestamp','Read']];
+  subs.forEach(s => rows.push([s.id, s.name, s.email, s.type, s.message.replace(/\n/g,' '), s.timestamp, s.read]));
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'saaheb_submissions.csv';
+  a.click();
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ============================================
+   FORM SUBMISSION → localStorage
+============================================ */
+function handleFormSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('form-name').value.trim();
+  const email = document.getElementById('form-email').value.trim();
+  const type = document.getElementById('form-type').value;
+  const message = document.getElementById('form-message').value.trim();
+  const sub = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+    name, email, type, message,
+    timestamp: new Date().toISOString(),
+    read: false
+  };
+  const subs = getSubmissions();
+  subs.unshift(sub);
+  saveSubmissions(subs);
+  document.getElementById('contact-form').reset();
+  const success = document.getElementById('contact-success');
+  success.classList.remove('hidden');
+  setTimeout(() => success.classList.add('hidden'), 5000);
+}
+
+/* ============================================
+   LIVE CLOCK
+============================================ */
+function updateClock() {
+  const now = new Date();
+  let h = now.getHours();
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  document.getElementById('live-clock').textContent = `${h}:${m}`;
+  document.getElementById('live-ampm').textContent = ampm;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ============================================
+   PARTICLES
+============================================ */
+(function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const COUNT = 28;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < COUNT; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 2 + 0.8,
+      speed: Math.random() * 0.4 + 0.15,
+      opacity: Math.random() * 0.5 + 0.1,
+      drift: (Math.random() - 0.5) * 0.3
+    });
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(253,204,115,${p.opacity})`;
+      ctx.fill();
+      p.y -= p.speed;
+      p.x += p.drift;
+      if (p.y < -10) {
+        p.y = H + 10;
+        p.x = Math.random() * W;
+      }
+      if (p.x < -10 || p.x > W + 10) p.x = Math.random() * W;
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ============================================
+   CUSTOM CURSOR
+============================================ */
+(function initCursor() {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function loop() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  // Magnetic attraction to buttons
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      dot.style.transform = 'translate(-50%,-50%) scale(1.8)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.borderColor = 'rgba(253,204,115,0.7)';
+    });
+    el.addEventListener('mouseleave', () => {
+      dot.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = 'rgba(253,204,115,0.4)';
+    });
+  });
+})();
+
+/* ============================================
+   PAGE ENTRANCE ANIMATION
+============================================ */
+window.addEventListener('load', () => {
+  const entranceEls = [
+    { id: 'hero-badge', delay: 100 },
+    { id: 'hero-headline', delay: 250 },
+    { id: 'hero-sub', delay: 400 },
+    { id: 'hero-ctas', delay: 550 },
+    { id: 'hero-cards', delay: 700 },
+  ];
+  entranceEls.forEach(({ id, delay }) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('entrance-visible');
+    }, delay);
+  });
+});
+
+/* ============================================
+   SCROLL REVEAL (IntersectionObserver)
+============================================ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+  revealObserver.observe(el);
+});
+
+/* ============================================
+   STAT COUNTER ANIMATION
+============================================ */
+function animateCounter(el, target, suffix = '') {
+  const duration = 2000;
+  const start = performance.now();
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.round(eased * target);
+    el.textContent = value.toLocaleString() + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const usersEl = document.getElementById('stat-users');
+      const countriesEl = document.getElementById('stat-countries');
+      const masjidsEl = document.getElementById('stat-masjids');
+      if (usersEl) { animateCounter(usersEl, 10000, '+'); }
+      if (countriesEl) { animateCounter(countriesEl, 45, '+'); }
+      if (masjidsEl) { animateCounter(masjidsEl, 14000, '+'); }
+      statsObserver.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+
+const statSection = document.querySelector('[data-target="10000"]');
+if (statSection) statsObserver.observe(statSection.closest('section') || statSection);
+
+/* ============================================
+   ACTIVE NAV HIGHLIGHT (IntersectionObserver)
+============================================ */
+(function initNavHighlight() {
+  const sections = ['sanctuary','protect','prayer','quran','habits','masjids','downloads','patrons'];
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function setActive(id) {
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href').replace('#','');
+      const isActive = href === id;
+      link.classList.toggle('bg-surface-container-high', isActive);
+      link.classList.toggle('text-primary', isActive);
+      link.classList.toggle('font-bold', isActive);
+      link.classList.toggle('shadow-[0_0_16px_rgba(223,177,91,0.12)]', isActive);
+      link.classList.toggle('text-on-surface-variant', !isActive);
+      if (isActive) link.setAttribute('aria-current','page');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  const sectionEls = sections.map(id => document.getElementById(id)).filter(Boolean);
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  sectionEls.forEach(el => obs.observe(el));
+})();
+
+/* ============================================
+   CARD TILT EFFECT
+============================================ */
+document.querySelectorAll('.tilt-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+/* ============================================
+   NAVBAR GLASSMORPHISM ON SCROLL
+============================================ */
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('main-header');
+  if (window.scrollY > 60) {
+    header.style.background = 'rgba(0,10,6,0.92)';
+    header.style.boxShadow = '0 2px 24px rgba(0,0,0,0.3)';
+  } else {
+    header.style.background = '';
+    header.style.boxShadow = '';
+  }
+});
+</script>
+</body></html>
